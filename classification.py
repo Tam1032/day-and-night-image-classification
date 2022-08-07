@@ -30,14 +30,47 @@ def load_dataset(dir):
 
     return imgs_list
 
+def standardize(image):
+    # Resize image and pre-process so that all "standard" images are the same size
+    standard_im = cv2.resize(image, (600, 400))
+    return standard_im
+
+def encode(label):
+    # encode day as 1, night as 0
+    if(label == "day"):
+        return 1
+    return 0
+
+def preprocess(image_list):
+
+    standard_list = []
+    for element in image_list:
+        image = element[0]
+        label = element[1]
+
+        standardized_img = standardize(image)
+        binary_label = encode(label)
+
+        # Append the image, and it's one hot encoded label to the full, processed list of image data
+        standard_list.append((standardized_img, binary_label))
+
+    return standard_list
+
+#Read the directories
 train_dir = 'Dataset/training'
 test_dir = 'Dataset/testing'
 
 # Load training data
-images = load_dataset(train_dir)
+Images = load_dataset(train_dir)
+Standardized_list = preprocess(Images)
+
 # Select a random image
 img_index = random.randint(1,200)
-selected_image = images[img_index][0]
+selected_image = Standardized_list[img_index][0]
+selected_label = Standardized_list[img_index][1]
+
 #Show the image
 plt.imshow(selected_image)
+print("Shape: "+str(selected_image.shape))
+print("Label [1 = day, 0 = night]: " + str(selected_label))
 plt.show()
