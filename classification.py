@@ -56,6 +56,19 @@ def preprocess(image_list):
 
     return standard_list
 
+#Find the average Value (V in HSV) or brightness of an image
+def avg_brightness(rgb_image):
+    #Convert the image to HSV
+    hsv_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2HSV)
+
+    #Add up the pixel value in V channel
+    sum_brightness = np.sum(hsv_image[:,:,2])
+    area = rgb_image.shape[0]*rgb_image.shape[1]
+
+    #Calculate the average
+    avg_bright = sum_brightness/area
+    return avg_bright
+
 #Read the directories
 train_dir = 'Dataset/training'
 test_dir = 'Dataset/testing'
@@ -71,6 +84,21 @@ selected_label = Standardized_list[img_index][1]
 
 #Show the image
 plt.imshow(selected_image)
-print("Shape: "+str(selected_image.shape))
+print("Shape:",selected_image.shape)
 print("Label [1 = day, 0 = night]: " + str(selected_label))
 plt.show()
+
+# Testing average brightness levels
+# Look at a number of different day and night images and think about
+# what average brightness value separates the two types of images
+
+# As an example, a "night" image is loaded in and its avg brightness is displayed
+print("-"*40)
+print("Check the average brightness")
+for img_index in range(0,232,11):
+    test_img = Standardized_list[img_index][0]
+    test_label = Images[img_index][1]
+    avg = avg_brightness(test_img)
+    print('Average brightness:',avg,test_label)
+    plt.imshow(test_img)
+    plt.show()
