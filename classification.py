@@ -69,9 +69,35 @@ def avg_brightness(rgb_image):
     avg_bright = sum_brightness/area
     return avg_bright
 
+def predict_label(rgb_image, threshold):
+    #Extract average brightness
+    avg = avg_brightness(rgb_image)
+    #Use the average brightness feature to predict a label (0,1)
+    if(avg>threshold):
+        #If average brightness is above threshold, we classify it as "day"
+        return 1
+    #Else, we predict it as "night"
+    return 0
+
+def calc_accuracy(test_images,threshold):
+    num_correct = 0
+    for image in test_images:
+        #Get true date
+        img = image[0]
+        label = image[1]
+        #Get predicted label:
+        predict = predict_label(img,threshold)
+        #Compare predicted label and true label
+        if(predict == label):
+            num_correct += 1
+    #Calculate the accuracy score
+    total = len(test_images)
+    accuracy = num_correct/total
+    return accuracy
+
 #Read the directories
 train_dir = 'Dataset/training'
-test_dir = 'Dataset/testing'
+test_dir = 'Dataset/test'
 
 # Load training data
 Images = load_dataset(train_dir)
@@ -100,5 +126,16 @@ for img_index in range(0,232,11):
     test_label = Images[img_index][1]
     avg = avg_brightness(test_img)
     print('Average brightness:',avg,test_label)
-    plt.imshow(test_img)
-    plt.show()
+    """plt.imshow(test_img)
+    plt.show()"""
+
+#Load the test data
+test_images = load_dataset(test_dir)
+#Standardize test data
+standardized_test_images = preprocess(test_images)
+#Shuffle standardized test data
+random.shuffle(standardized_test_images)
+#Accuracy caclculation
+accuracy_score = calc_accuracy(standardized_test_images,100)
+print("-"*40)
+print("Accuracy:",accuracy_score)
