@@ -11,4 +11,4 @@ This project was developed using Python with following packages:
 
 These packages can be installed with the following pip command:  
 
- ```bash pip install -r requirements.txt ```
+ ``` pip install -r requirements.txt ```
