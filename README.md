@@ -8,5 +8,7 @@ This project was developed using Python with following packages:
 - pandas==0.24.2
 - matplotlib==3.0.3
 - opencv-python  
+
 These packages can be installed with the following pip command:  
-``` pip install -r requirements.txt ```
+
+ ```bash pip install -r requirements.txt ```
