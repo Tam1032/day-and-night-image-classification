@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import cv2
 import random
 import numpy as np
+from sklearn.metrics import accuracy_score, f1_score
 
 def load_dataset(dir):
     '''This function loads in images and their labels and places them in a list
@@ -69,7 +70,7 @@ def avg_brightness(rgb_image):
     avg_bright = sum_brightness/area
     return avg_bright
 
-def predict_label(rgb_image, threshold):
+def predict_single(rgb_image, threshold):
     #Extract average brightness
     avg = avg_brightness(rgb_image)
     #Use the average brightness feature to predict a label (0,1)
@@ -79,21 +80,16 @@ def predict_label(rgb_image, threshold):
     #Else, we predict it as "night"
     return 0
 
-def calc_accuracy(test_images,threshold):
-    num_correct = 0
+def predict(test_images,threshold):
+    predictions = []
     for image in test_images:
         #Get true date
         img = image[0]
-        label = image[1]
         #Get predicted label:
-        predict = predict_label(img,threshold)
+        predict = predict_single(img,threshold)
+        predictions.append(predict)
         #Compare predicted label and true label
-        if(predict == label):
-            num_correct += 1
-    #Calculate the accuracy score
-    total = len(test_images)
-    accuracy = num_correct/total
-    return accuracy
+    return predictions
 
 #Read the directories
 train_dir = 'Dataset/training'
@@ -126,8 +122,6 @@ for img_index in range(0,232,11):
     test_label = Images[img_index][1]
     avg = avg_brightness(test_img)
     print('Average brightness:',avg,test_label)
-    """plt.imshow(test_img)
-    plt.show()"""
 
 #Load the test data
 test_images = load_dataset(test_dir)
@@ -136,6 +130,10 @@ standardized_test_images = preprocess(test_images)
 #Shuffle standardized test data
 random.shuffle(standardized_test_images)
 #Accuracy caclculation
-accuracy_score = calc_accuracy(standardized_test_images,100)
+predicts = predict(standardized_test_images,100)
+true_labels = [item[1] for item in standardized_test_images]
+accuracy = accuracy_score(true_labels,predicts)
+f1 = f1_score(true_labels,predicts)
 print("-"*40)
-print("Accuracy:",accuracy_score)
+print("Accuracy:",accuracy)
+print("F1 score:",f1)
