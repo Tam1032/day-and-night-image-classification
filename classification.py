@@ -70,7 +70,7 @@ def avg_brightness(rgb_image):
     avg_bright = sum_brightness/area
     return avg_bright
 
-def predict_single(rgb_image, threshold):
+def predict(rgb_image, threshold):
     #Extract average brightness
     avg = avg_brightness(rgb_image)
     #Use the average brightness feature to predict a label (0,1)
@@ -79,17 +79,6 @@ def predict_single(rgb_image, threshold):
         return 1
     #Else, we predict it as "night"
     return 0
-
-def predict(test_images,threshold):
-    predictions = []
-    for image in test_images:
-        #Get true date
-        img = image[0]
-        #Get predicted label:
-        predict = predict_single(img,threshold)
-        predictions.append(predict)
-        #Compare predicted label and true label
-    return predictions
 
 #Read the directories
 train_dir = 'Dataset/training'
@@ -130,7 +119,8 @@ standardized_test_images = preprocess(test_images)
 #Shuffle standardized test data
 random.shuffle(standardized_test_images)
 #Accuracy caclculation
-predicts = predict(standardized_test_images,100)
+predicts = [predict(item[0],100)
+            for item in standardized_test_images]
 true_labels = [item[1] for item in standardized_test_images]
 accuracy = accuracy_score(true_labels,predicts)
 f1 = f1_score(true_labels,predicts)
