@@ -15,7 +15,8 @@ These packages can be installed with the following pip command:
  ``` pip install -r requirements.txt ```
 
 ## Dataset description
-The dataset contains 400 RGB color images from [AMOS](https://mvrl.cse.wustl.edu/datasets/amos/) dataset (Archive of Many Outdoor Scenes). The numbers of each category are equal: 200 day images and 200 night images. This gives us a balanced dataset.
+The dataset contains 400 RGB color images from [AMOS](https://mvrl.cse.wustl.edu/datasets/amos/) dataset (Archive of Many Outdoor Scenes). The numbers of each category are equal: 200 day images and 200 night images. This gives us a balanced dataset.  
+Each category is divided into 2 sets: the training set with 120 instances and the test set with 80 instances.
 ## Approach
 Step 1: Load and visualize the data  
 - Visualization helps us notice a feature: the night images are generally darker than the day images.  
