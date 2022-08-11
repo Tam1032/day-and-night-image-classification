@@ -12,3 +12,6 @@ This project was developed using Python with following packages:
 These packages can be installed with the following pip command:  
 
  ``` pip install -r requirements.txt ```
+ 
+#Dataset description
+The dataset contains 400 RGB color images from [AMOS](https://mvrl.cse.wustl.edu/datasets/amos/) dataset (Archive of Many Outdoor Scenes). The numbers of each category are equal: 200 day images and 200 night images. This gives us a balanced dataset.
